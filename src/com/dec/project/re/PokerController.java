@@ -86,6 +86,7 @@ public class PokerController {
 		}
 	}
 	
+	// 베팅 메소드
 	public static void betting(PokerManage manage, PokerView view, int count) {
 		System.out.println("===== "+count+"번째 베팅 =====");
 		// 누가 이번턴의 초기베팅액을 정할지 결정
