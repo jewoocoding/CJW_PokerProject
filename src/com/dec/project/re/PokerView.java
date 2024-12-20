@@ -20,7 +20,8 @@ public class PokerView implements ViewInterface {
 			try {
 				System.out.print("당신의 이름을 입력해 주세요 : ");
 				user.setName(sc.next());
-				System.out.print("게임을 플레이하기 위한 초기 금액을 정해주세요 : ");
+				System.out.println("게임을 플레이하기 위한 초기 금액을 정해주세요 : ");
+				System.out.print("(원) >> ");
 				user.setMoney(sc.nextInt());
 				break start;
 			}catch(InputMismatchException e) {
@@ -73,6 +74,12 @@ public class PokerView implements ViewInterface {
 
 	@Override
 	public void printBet(Player player, int bettingMoney) {
+		try {
+			Thread.sleep(300);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.printf("%s님이 %d원을 베팅하셨습니다.\n",player.getName(),bettingMoney);
 		System.out.println();
 	}
@@ -144,6 +151,12 @@ public class PokerView implements ViewInterface {
 
 	@Override
 	public void printTable(List<Player> playerList) {
+		try {
+			Thread.sleep(300);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("===== 테이블 =====");
 		for(Player player : playerList) {
 			System.out.println(player.getName());
@@ -153,9 +166,22 @@ public class PokerView implements ViewInterface {
 		System.out.println();
 	}
 	
+	public void printUserHand(Player user) {
+		System.out.println("===== 내 손패 =====");
+		for(Card card : user.getHandCardList())
+			System.out.println(card.toString());
+		System.out.println();
+	}
+	
 	public void printshowAll(List<Player> playerList) {
 		System.out.println("===== 테이블 =====");
 		for(Player player : playerList) {
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.out.println(player.getName());
 			for(int i=0; i<player.getCardList().size();i++)
 				System.out.println(player.getCardList().get(i).toString());
@@ -253,8 +279,15 @@ public class PokerView implements ViewInterface {
 
 	@Override
 	public void printChoiceBet(List<Player> playerList) {
-		for(Player player : playerList)
+		for(Player player : playerList) {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.out.println(player.getName()+"님 : "+player.getBettingChoice());
+		}
 		System.out.println();
 	}
 	

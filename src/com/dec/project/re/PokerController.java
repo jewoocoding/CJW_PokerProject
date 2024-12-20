@@ -23,15 +23,24 @@ public class PokerController {
 				// 플레이어들 정보 출력
 				view.printPlayerInfor(manage.getPlayerList());
 				// 카드 나눠주기
-				view.displayMessage("카드를 나눠드리겠습니다.(3장)");
-				manage.giveCard();
-				manage.giveCard();
-				manage.giveCard();
+				for(int i=0; i<3;i++) {
+					view.displayMessage("카드를 나눠드리겠습니다.");
+					view.displayMessage("...");
+					manage.giveCard();
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
 				// 내 카드 출력
 				view.printUserCard(me);
 				// 테이블위에 올려놓을 카드 선택해 올려놓음
 				manage.selectUserShowCard(view.selectUserShowCard(me));
 				manage.selectComShowCard();
+				view.printUserHand(me);
 				view.printTable(manage.getPlayerList());
 				// 베팅
 				count++;
@@ -39,7 +48,16 @@ public class PokerController {
 				for(int i=0;i<2;i++) {
 					count++;
 					// 테이블위에 카드 올려놓음
+					view.displayMessage("카드를 나눠드리겠습니다.");
+					view.displayMessage("...");
 					manage.giveShowCard();
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					view.printUserHand(me);
 					view.printTable(manage.getPlayerList());
 					// 베팅 반복
 					betting(manage, view,count);
@@ -51,6 +69,7 @@ public class PokerController {
 					view.printGameScore(manage.getPlayerList().get(i));
 				}
 				view.printWinner(manage.endGame(), manage.getPrize());
+				manage.clearData();
 				break;
 			case 2:
 				view.printMoney(manage.getUser());

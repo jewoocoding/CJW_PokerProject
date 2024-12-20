@@ -6,6 +6,7 @@ public class PokerManage implements ManageInterface {
 	// 필드
 	private List<Card> cardDeck; // 전체 트럼프카드 덱
 	private List<Player> playerList; // 플레이어리스트
+	private Player user;
 	private int win; // 유저의 승리 횟수
 	private int lose; // 유저의 패배 횟수
 	private int bettingMoney; // 한 턴의 베팅금액을 저장하는 변수
@@ -60,6 +61,7 @@ public class PokerManage implements ManageInterface {
 		lose = 0;
 		bettingMoney = 0;
 		prize = 0;
+		user = null;
 		playerList = new ArrayList<Player>();
 		cardDeck = new ArrayList<Card>();
 		// 트럼프 카드덱 생성하여 저장
@@ -84,6 +86,7 @@ public class PokerManage implements ManageInterface {
 	@Override
 	public void addPlayer(Player player) {
 		// 유저를 받아와서 리스트에 저장
+		user = player;
 		playerList.add(player);
 	}
 
@@ -358,13 +361,14 @@ public class PokerManage implements ManageInterface {
 		for(int i=0;i<numberList.size();i++) {
 			numberSet.add(numberList.get(i));
 		}
-		Iterator it = numberSet.iterator();
+		Iterator<Integer> it = numberSet.iterator();
 		switch(numberSet.size()) {
 		case 2: // 포카드, 풀하우스 판별
 			while(it.hasNext()) {
 				int same = 0;
+				int setNumber = it.next();
 				for(int i=0; i<5;i++) {
-					if(it.next() == numberList.get(i)) {
+					if(setNumber == numberList.get(i)) {
 						same++;
 					}
 				}
@@ -378,8 +382,9 @@ public class PokerManage implements ManageInterface {
 		case 3: // 트리플, 투페어 판별
 			while(it.hasNext()) {
 				int same = 0;
+				int setNumber = it.next();
 				for(int i=0; i<5;i++) {
-					if(it.next() == numberList.get(i)) {
+					if(setNumber == numberList.get(i)) {
 						same++;
 					}
 				}
@@ -458,15 +463,64 @@ public class PokerManage implements ManageInterface {
 					if(minChallenger > playerList.get(i).getCardList().get(j).getNumber())
 						minChallenger = playerList.get(i).getCardList().get(j).getNumber();
 				}
-				
-				if(minChallenger == 1) {
+				if(minWinner ==1) {
+					winner = winner;
+				}else if(minChallenger == 1) {
 					winner = playerList.get(i);
 				}else if(maxChallenger > maxWinner) {
 					winner = playerList.get(i);
 				}
 			}
 		}
+		
+		if(winner.isUser()) {
+			win++;
+		}else {
+			lose++;
+		}
+		
 		return winner;
+	}
+	
+	public void clearData() {
+		Iterator<Player> it = playerList.iterator();
+		int userDie = 0;
+		while(it.hasNext()) {
+			Player player = it.next();
+			player.getCardList().clear();
+			player.getHandCardList().clear();
+			player.getTableCardList().clear();
+			if(!player.isUser()) {
+				it.remove();
+			}else {
+				userDie++;
+			}
+		}
+		if(userDie == 0) {
+			playerList.add(user);
+			user.getCardList().clear();
+			user.getHandCardList().clear();
+			user.getTableCardList().clear();
+		}
+		
+		cardDeck.clear();
+		for(int i=1;i<=13;i++) {
+			Card card = new Card(i, "Spade");
+			cardDeck.add(card);
+		}
+		for(int i=1;i<=13;i++) {
+			Card card = new Card(i, "Diamond");
+			cardDeck.add(card);
+		}
+		for(int i=1;i<=13;i++) {
+			Card card = new Card(i, "Clover");
+			cardDeck.add(card);
+		}
+		for(int i=1;i<=13;i++) {
+			Card card = new Card(i, "Heart");
+			cardDeck.add(card);
+		}
+		prize = 0;
 	}
 	
 }
